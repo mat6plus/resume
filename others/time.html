@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vertical Timeline</title>
+<style>
+  /* ============ TIMELINE COMPONENT ============ */
+  :root{
+    --tl-bg:      #E9EBEE;   /* page / backdrop            */
+    --tl-line:    #C6CAD2;   /* spine + top tick           */
+    --tl-dot:     #1A73E8;   /* node core                  */
+    --tl-ring:    #FFFFFF;   /* node ring                  */
+    --tl-card:    #FFFFFF;   /* side pointer (card arrow)  */
+    --tl-width:   64px;      /* strip width                */
+    --tl-height:  570px;     /* strip height               */
+    --tl-line-w:  5px;       /* spine thickness            */
+    --tl-dot-size:10px;      /* node core diameter         */
+    --tl-ring-w:  4px;       /* node white ring thickness  */
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    min-height:100vh;
+    background:var(--tl-bg);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* ---- strip ---- */
+  .timeline{
+    position:relative;
+    width:var(--tl-width);
+    height:var(--tl-height);
+  }
+
+  /* spine */
+  .timeline::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:0;
+    bottom:0;
+    width:var(--tl-line-w);
+    transform:translateX(-50%);
+    background:var(--tl-line);
+    border-radius:99px;
+  }
+
+  /* small tick at the very top (right of spine) */
+  .timeline::after{
+    content:"";
+    position:absolute;
+    top:4px;
+    left:calc(50% + 7px);
+    width:var(--tl-line-w);
+    height:16px;
+    background:var(--tl-line);
+    border-radius:99px;
+  }
+
+  /* ---- node row (dot + side pointer) ---- */
+  .tl-item{
+    position:absolute;
+    left:0;
+    right:0;
+    height:0;
+    top:var(--t);
+  }
+
+  /* blue dot with white ring, centred on the spine */
+  .tl-item::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:0;
+    transform:translate(-50%,-50%);
+    width:var(--tl-dot-size);
+    height:var(--tl-dot-size);
+    border-radius:50%;
+    background:var(--tl-dot);
+    border:var(--tl-ring-w) solid var(--tl-ring);
+    box-sizing:content-box;
+    box-shadow:0 1px 4px rgba(15,20,25,.18);
+  }
+
+  /* white card-arrow tips, alternating sides, aligned with dots */
+  .tl-item.left::after{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    transform:translateY(-50%);
+    width:0;
+    height:0;
+    border-top:9px solid transparent;
+    border-bottom:9px solid transparent;
+    border-left:12px solid var(--tl-card);
+    filter:drop-shadow(0 1px 2px rgba(15,20,25,.10));
+  }
+  .tl-item.right::after{
+    content:"";
+    position:absolute;
+    right:0;
+    top:0;
+    transform:translateY(-50%);
+    width:0;
+    height:0;
+    border-top:9px solid transparent;
+    border-bottom:9px solid transparent;
+    border-right:12px solid var(--tl-card);
+    filter:drop-shadow(0 1px 2px rgba(15,20,25,.10));
+  }
+</style>
+</head>
+<body>
+
+  <!-- vertical timeline : dot positions via --t (top %) -->
+  <div class="timeline" aria-hidden="true">
+    <span class="tl-item left"  style="--t:12%"></span>
+    <span class="tl-item right" style="--t:33%"></span>
+    <span class="tl-item left"  style="--t:54.5%"></span>
+    <span class="tl-item right" style="--t:75.5%"></span>
+    <span class="tl-item left"  style="--t:96.5%"></span>
+  </div>
+
+</body>
+</html>
